@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MASHEKÜ PROJECT — Гио Пико</title>
+<style>
+  /* ============ СБРОС И БАЗА ============ */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --bg: #0a0a12;
+    --bg2: #12121f;
+    --card: #1a1a2e;
+    --border: #2a2a45;
+    --text: #e0e0f0;
+    --muted: #8888a8;
+    --accent: #ff3355;
+    --accent2: #ffaa00;
+    --accent3: #00ddff;
+    --glow: rgba(255, 51, 85, 0.4);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ============ ФОН СО ЗВЁЗДАМИ ============ */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      radial-gradient(2px 2px at 20% 30%, #fff, transparent),
+      radial-gradient(1px 1px at 60% 70%, #fff, transparent),
+      radial-gradient(1px 1px at 80% 10%, #fff, transparent),
+      radial-gradient(2px 2px at 40% 80%, #aaf, transparent),
+      radial-gradient(1px 1px at 10% 50%, #fff, transparent),
+      radial-gradient(1px 1px at 90% 40%, #fff, transparent),
+      radial-gradient(1px 1px at 50% 20%, #faf, transparent),
+      radial-gradient(1px 1px at 30% 90%, #fff, transparent);
+    background-size: 200% 200%;
+    animation: twinkle 8s ease-in-out infinite;
+    z-index: -1;
+    opacity: 0.6;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+  }
+
+  /* ============ НАВИГАЦИЯ ============ */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(10, 10, 18, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    padding: 15px 0;
+  }
+
+  nav .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .logo {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: var(--text);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo span {
+    color: var(--accent);
+    text-shadow: 0 0 15px var(--glow);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 25px;
+    list-style: none;
+    flex-wrap: wrap;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .nav-links a:hover {
+    color: var(--accent);
+    text-shadow: 0 0 10px var(--glow);
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    transition: width 0.3s;
+  }
+
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+
+  /* ============ ГЕРОЙ ============ */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 100px 20px 60px;
+    position: relative;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    background: rgba(255, 51, 85, 0.15);
+    border: 1px solid var(--accent);
+    border-radius: 30px;
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 25px;
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 var(--glow); }
+    50% { box-shadow: 0 0 20px 5px var(--glow); }
+  }
+
+  .hero h1 {
+    font-size: clamp(40px, 9vw, 90px);
+    font-weight: 900;
+    letter-spacing: 4px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 40px var(--glow);
+    line-height: 1.1;
+  }
+
+  .hero h2 {
+    font-size: clamp(20px, 4vw, 36px);
+    font-weight: 700;
+    color: var(--accent3);
+    letter-spacing: 6px;
+    margin-bottom: 25px;
+    text-shadow: 0 0 20px rgba(0, 221, 255, 0.5);
+  }
+
+  .hero p {
+    font-size: clamp(15px, 2vw, 19px);
+    color: var(--muted);
+    max-width: 650px;
+    margin-bottom: 40px;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn {
+    padding: 15px 35px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    cursor: pointer;
+    border: none;
+    display: inline-block;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 5px 25px var(--glow);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 35px var(--glow);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 2px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent3);
+    color: var(--accent3);
+    box-shadow: 0 0 20px rgba(0, 221, 255, 0.3);
+  }
+
+  /* ============ СЕКЦИИ ============ */
+  section {
+    padding: 90px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+  }
+
+  .section-title span {
+    color: var(--accent);
+  }
+
+  .section-sub {
+    text-align: center;
+    color: var(--muted);
+    margin-bottom: 60px;
+    font-size: 16px;
+  }
+
+  /* ============ О ПРОЕКТЕ ============ */
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+  }
+
+  .about-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 30px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+
+  .about-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    box-shadow: 0 15px 40px rgba(255, 51, 85, 0.2);
+  }
+
+  .about-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .about-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+  }
+
+  .about-card h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .about-card p {
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  /* ============ ГЛАВЫ ============ */
+  .chapters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+  }
+
+  .chapter-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .chapter-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent2);
+    box-shadow: 0 15px 40px rgba(255, 170, 0, 0.2);
+  }
+
+  .chapter-num {
+    background: linear-gradient(135deg, var(--accent), #aa0033);
+    padding: 20px;
+    font-size: 32px;
+    font-weight: 900;
+    text-align: center;
+    letter-spacing: 2px;
+  }
+
+  .chapter-body {
+    padding: 25px;
+  }
+
+  .chapter-body h3 {
+    font-size: 19px;
+    margin-bottom: 10px;
+    color: var(--accent2);
+  }
+
+  .chapter-body p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .chapter-status {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 4px 12px;
+    background: rgba(0, 221, 255, 0.15);
+    border: 1px solid var(--accent3);
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent3);
+    letter-spacing: 1px;
+  }
+
+  .chapter-status.soon {
+    background: rgba(136, 136, 168, 0.15);
+    border-color: var(--muted);
+    color: var(--muted);
+  }
+
+  /* ============ ПЕРСОНАЖИ ============ */
+  .characters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 25px;
+  }
+
+  .char-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 30px 20px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  .char-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    box-shadow: 0 15px 40px rgba(255, 51, 85, 0.2);
+  }
+
+  .char-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    border: 3px solid var(--border);
+    transition: all 0.3s;
+  }
+
+  .char-card:hover .char-avatar {
+    border-color: var(--accent);
+    box-shadow: 0 0 30px var(--glow);
+    transform: scale(1.05);
+  }
+
+  .giyo .char-avatar { background: linear-gradient(135deg, #ff6b3d, #cc3300); }
+  .shukhrat .char-avatar { background: linear-gradient(135deg, #4da6ff, #0044cc); }
+  .maryam .char-avatar { background: linear-gradient(135deg, #ff99cc, #cc0066); }
+  .mom .char-avatar { background: linear-gradient(135deg, #888, #333); }
+
+  .char-card h3 {
+    font-size: 20px;
+    margin-bottom: 5px;
+  }
+
+  .char-role {
+    color: var(--accent3);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+  }
+
+  .char-card p {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* ============ ИГРЫ ============ */
+  .games {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+  }
+
+  .game-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .game-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent3);
+    box-shadow: 0 15px 40px rgba(0, 221, 255, 0.2);
+  }
+
+  .game-cover {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .game-cover.giyo {
+    background: linear-gradient(135deg, #ff3355, #660022);
+  }
+
+  .game-cover.soon1 {
+    background: linear-gradient(135deg, #0044cc, #001144);
+  }
+
+  .game-cover.soon2 {
+    background: linear-gradient(135deg, #cc6600, #442200);
+  }
+
+  .game-body {
+    padding: 25px;
+  }
+
+  .game-body h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .game-body p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+
+  .game-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(255, 51, 85, 0.15);
+    border: 1px solid var(--accent);
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 1px;
+  }
+
+  .game-tag.soon {
+    background: rgba(255, 170, 0, 0.15);
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  /* ============ ФУТЕР ============ */
+  footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 40px 20px;
+    text-align: center;
+  }
+
+  footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  footer p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  footer .logo {
+    justify-content: center;
+    margin-bottom: 15px;
+    font-size: 20px;
+  }
+
+  footer .social {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  footer .social a {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.3s;
+    font-size: 18px;
+  }
+
+  footer .social a:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px var(--glow);
+  }
+
+  /* ============ АДАПТИВ ============ */
+  @media (max-width: 600px) {
+    nav .container {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .nav-links {
+      gap: 15px;
+      font-size: 14px;
+      justify-content: center;
+    }
+
+    section {
+      padding: 60px 15px;
+    }
+
+    .hero {
+      padding: 120px 15px 60px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ НАВИГАЦИЯ ============ -->
+<nav>
+  <div class="container">
+    <a href="#" class="logo">MASHEKÜ <span>PROJECT</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">О проекте</a></li>
+      <li><a href="#chapters">Главы</a></li>
+      <li><a href="#characters">Персонажи</a></li>
+      <li><a href="#games">Игры</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============ ГЕРОЙ ============ -->
+<header class="hero">
+  <div class="hero-badge">FAN PROJECT</div>
+  <h1>ГИО ПИКО</h1>
+  <h2>MASHEKÜ PROJECT</h2>
+  <p>
+    История мальчика, которого бросили родители. История о доброте чужих людей,
+    о боли, о надежде и о пути, который ему предстоит пройти.
+  </p>
+  <div class="hero-buttons">
+    <a href="#chapters" class="btn btn-primary">Читать главы</a>
+    <a href="#games" class="btn btn-secondary">Наши игры</a>
+  </div>
+</header>
+
+<!-- ============ О ПРОЕКТЕ ============ -->
+<section id="about">
+  <h2 class="section-title">О <span>ПРОЕКТЕ</span></h2>
+  <p class="section-sub">MASHEKÜ PROJECT — независимая студия, делающая сюжетные игры</p>
+
+  <div class="about-grid">
+    <div class="about-card">
+      <div class="about-icon">🎮</div>
+      <h3>Сюжетные игры</h3>
+      <p>Мы делаем игры, где важна история, а не стрельба. Каждый персонаж — живой, каждая сцена — с эмоцией.</p>
+    </div>
+
+    <div class="about-card">
+      <div class="about-icon">💔</div>
+      <h3>Реальные темы</h3>
+      <p>Наши игры рассказывают о том, что происходит в жизни: одиночество, предательство, доброта незнакомцев.</p>
+    </div>
+
+    <div class="about-card">
+      <div class="about-icon">🌍</div>
+      <h3>Мультикультурность</h3>
+      <p>В наших историях живут герои разных народов: узбеки, русские, украинцы. Мы показываем, что доброта не знает границ.</p>
+    </div>
+
+    <div class="about-card">
+      <div class="about-icon">📱</div>
+      <h3>На телефоне</h3>
+      <p>Все наши игры работают на Android. Скачай, установи, играй — без мощного ПК и сложных настроек.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ГЛАВЫ ============ -->
+<section id="chapters">
+  <h2 class="section-title">ГЛАВЫ <span>ГИО ПИКО</span></h2>
+  <p class="section-sub">История мальчика по имени Гио Пико — от детства до взрослой жизни</p>
+
+  <div class="chapters">
+    <div class="chapter-card">
+      <div class="chapter-num">ГЛАВА 1</div>
+      <div class="chapter-body">
+        <h3>Брат Шухрат</h3>
+        <p>Родители бросают семилетнего Пико на ночной дороге. Он идёт в город и встречает шаурмиста Шухрата — узбека, который приехал на заработки. Шухрат и его мама Марьям дают мальчику еду, ночлег и тепло. Но в детском доме появляется родная мать — и отказывается от сына.</p>
+        <span class="chapter-status">✅ ДОСТУПНА</span>
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">ГЛАВА 2</div>
+      <div class="chapter-body">
+        <h3>Новая семья</h3>
+        <p>Шухрат хочет усыновить Пико, но ему не разрешают — у него нет жены. Он регистрируется на сайте знакомств, чтобы найти русскую девушку и дать мальчику настоящую семью.</p>
+        <span class="chapter-status soon">🔒 СКОРО</span>
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">ГЛАВА 3</div>
+      <div class="chapter-body">
+        <h3>Улица</h3>
+        <p>Пико растёт. Он сталкивается с улицей, с плохой компанией, с выбором — быть добрым или стать таким, как все вокруг. Его путь ведёт к криминалу.</p>
+        <span class="chapter-status soon">🔒 СКОРО</span>
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">ГЛАВА 4</div>
+      <div class="chapter-body">
+        <h3>Выбор</h3>
+        <p>Пико взрослеет. Он стоит перед главным выбором своей жизни: месть или прощение, криминал или семья. От этого решения зависит его судьба.</p>
+        <span class="chapter-status soon">🔒 СКОРО</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ПЕРСОНАЖИ ============ -->
+<section id="characters">
+  <h2 class="section-title">ПЕРСОНАЖИ</h2>
+  <p class="section-sub">Те, кто встретится на пути Пико</p>
+
+  <div class="characters">
+    <div class="char-card giyo">
+      <div class="char-avatar">👦</div>
+      <h3>Гио Пико</h3>
+      <div class="char-role">ГЛАВНЫЙ ГЕРОЙ</div>
+      <p>Семилетний мальчик, которого бросили родители. Добрый, наивный, ищет тепло и защиту.</p>
+    </div>
+
+    <div class="char-card shukhrat">
+      <div class="char-avatar">👨</div>
+      <h3>Шухрат</h3>
+      <div class="char-role">ШАУРМИСТ ИЗ УЗБЕКИСТАНА</div>
+      <p>Приехал на заработки. Добрый мусульманин, который не смог пройти мимо потерянного мальчика.</p>
+    </div>
+
+    <div class="char-card maryam">
+      <div class="char-avatar">👩</div>
+      <h3>Марьям</h3>
+      <div class="char-role">МАМА ШУХРАТА</div>
+      <p>Пожилая узбечка. Готовит плов и самсу. Заботится о Пико, как о родном внуке.</p>
+    </div>
+
+    <div class="char-card mom">
+      <div class="char-avatar">👩‍🦰</div>
+      <h3>Мать Пико</h3>
+      <div class="char-role">АНТАГОНИСТ</div>
+      <p>Холодная, жестокая. Бросила сына, а когда встретила в детдоме — ударила и отказалась от него.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ИГРЫ ============ -->
+<section id="games">
+  <h2 class="section-title">НАШИ <span>ИГРЫ</span></h2>
+  <p class="section-sub">Что мы делаем и что будет дальше</p>
+
+  <div class="games">
+    <div class="game-card">
+      <div class="game-cover giyo">ГИО ПИКО</div>
+      <div class="game-body">
+        <h3>Гио Пико</h3>
+        <p>Сюжетная игра о мальчике, которого бросили родители. 15+ минут геймплея, диалоги, выборы.</p>
+        <span class="game-tag">В РАЗРАБОТКЕ</span>
+      </div>
+    </div>
+
+    <div class="game-card">
+      <div class="game-cover soon1">???</div>
+      <div class="game-body">
+        <h3>Проект №2</h3>
+        <p>Следующая игра студии. Пока секрет. Следи за обновлениями.</p>
+        <span class="game-tag soon">СКОРО</span>
+      </div>
+    </div>
+
+    <div class="game-card">
+      <div class="game-cover soon2">???</div>
+      <div class="game-body">
+        <h3>Проект №3</h3>
+        <p>Третья игра MASHEKÜ PROJECT. Анонс в ближайшее время.</p>
+        <span class="game-tag soon">СКОРО</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ФУТЕР ============ -->
+<footer>
+  <div class="container">
+    <a href="#" class="logo">MASHEKÜ <span>PROJECT</span></a>
+    <p>Фанатский проект. Игры создаются с душой и любовью к историям.</p>
+    <p style="font-size: 13px; margin-top: 15px;">© 2026 MASHEKÜ PROJECT. Все права защищены.</p>
+
+    <div class="social">
+      <a href="#" title="Telegram">✈️</a>
+      <a href="#" title="YouTube">▶️</a>
+      <a href="#" title="VK">🌐</a>
+      <a href="#" title="GitHub">💻</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
